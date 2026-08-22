@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMERC - Ingeniería y Capacitación</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a1a2f;
+            --secondary: #0d2137;
+            --accent: #00b4d8;
+            --accent2: #0077b6;
+            --gold: #f4a261;
+            --gold-light: #ffd166;
+            --green: #06d6a0;
+            --red: #ef476f;
+            --text: #1a1a2e;
+            --text-light: #4a4a5a;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --white: #ffffff;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 180, 216, 0.08);
+            animation: float 20s infinite ease-in-out;
+        }
+        .particle:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+        .particle:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            bottom: -150px;
+            right: -150px;
+            animation-delay: -5s;
+            background: rgba(6, 214, 160, 0.06);
+        }
+        .particle:nth-child(3) {
+            width: 200px;
+            height: 200px;
+            top: 40%;
+            left: 10%;
+            animation-delay: -10s;
+            background: rgba(244, 162, 97, 0.05);
+        }
+        .particle:nth-child(4) {
+            width: 250px;
+            height: 250px;
+            top: 20%;
+            right: 15%;
+            animation-delay: -15s;
+        }
+        .particle:nth-child(5) {
+            width: 350px;
+            height: 350px;
+            bottom: 20%;
+            left: 30%;
+            animation-delay: -7s;
+            background: rgba(239, 71, 111, 0.04);
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(30px, -40px) rotate(5deg);
+            }
+            50% {
+                transform: translate(-20px, 30px) rotate(-3deg);
+            }
+            75% {
+                transform: translate(40px, 20px) rotate(4deg);
+            }
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(10, 26, 47, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(0, 180, 216, 0.3);
+            padding: 0.8rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), var(--green));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: white;
+            font-weight: 900;
+            letter-spacing: -1px;
+            box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
+        }
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        .logo-text .brand {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: white;
+            letter-spacing: 2px;
+        }
+        .logo-text .brand span {
+            color: var(--accent);
+        }
+        .logo-text .tagline {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 500;
+        }
+        .header-badge {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--primary);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(244, 162, 97, 0.4);
+            animation: pulse-badge 2s infinite;
+        }
+        @keyframes pulse-badge {
+            0%,
+            100% {
+                box-shadow: 0 4px 15px rgba(244, 162, 97, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(244, 162, 97, 0.7);
+            }
+        }
+        .header-badge i {
+            font-size: 1rem;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 30%, #0d3b54 60%, #0a2a3f 100%);
+            padding: 4rem 2rem 5rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(0, 180, 216, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(6, 214, 160, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--green), var(--gold), var(--red), var(--accent));
+            background-size: 200% 100%;
+            animation: gradient-move 4s linear infinite;
+        }
+        @keyframes gradient-move {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 200% 50%;
+            }
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .hero h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: white;
+            letter-spacing: -0.5px;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--accent), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 1rem auto 2rem;
+            font-weight: 300;
+        }
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .hero-tag {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: white;
+            padding: 0.45rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+        .hero-tag:hover {
+            background: rgba(0, 180, 216, 0.25);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .hero-tag i {
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+        .price-flag {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--primary);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 6px 25px rgba(244, 162, 97, 0.5);
+            margin-bottom: 1.5rem;
+            animation: float-badge 3s ease-in-out infinite;
+        }
+        @keyframes float-badge {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+        .price-flag i {
+            margin-right: 0.4rem;
+        }
+        .audience-badge {
+            display: inline-block;
+            background: rgba(6, 214, 160, 0.15);
+            border: 1px solid rgba(6, 214, 160, 0.4);
+            color: var(--green);
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        .audience-badge i {
+            margin-right: 0.4rem;
+        }
+
+        /* ===== SECTION TITLES ===== */
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+        .section-title h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+        .section-title .underline {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--green));
+            border-radius: 2px;
+            margin: 0.8rem auto 0;
+        }
+        .section-title p {
+            color: var(--text-light);
+            margin-top: 0.8rem;
+            font-size: 1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== COURSES GRID ===== */
+        .courses-section {
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .course-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.8rem 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            cursor: pointer;
+        }
+        .course-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--green));
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .course-card:hover::before {
+            opacity: 1;
+        }
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(0, 180, 216, 0.3);
+        }
+        .course-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+        .course-card:hover .course-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        .icon-python {
+            background: linear-gradient(135deg, #3776ab, #ffd43b);
+            color: white;
+        }
+        .icon-latex {
+            background: linear-gradient(135deg, #1a1a1a, #4a4a5a);
+            color: #fff;
+            font-family: 'Times New Roman', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .icon-arcgis {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: white;
+        }
+        .icon-qgis {
+            background: linear-gradient(135deg, #558b2f, #7cb342);
+            color: white;
+        }
+        .icon-gee {
+            background: linear-gradient(135deg, #1a73e8, #34a853);
+            color: white;
+        }
+        .icon-auto {
+            background: linear-gradient(135deg, #e65100, #ff8f00);
+            color: white;
+        }
+        .icon-apa {
+            background: linear-gradient(135deg, #6a1b9a, #ab47bc);
+            color: white;
+        }
+        .icon-cv {
+            background: linear-gradient(135deg, #0d47a1, #42a5f5);
+            color: white;
+        }
+        .icon-training {
+            background: linear-gradient(135deg, #00838f, #26c6da);
+            color: white;
+        }
+        .course-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        .course-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+        .course-price {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--gold);
+            background: rgba(244, 162, 97, 0.12);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            border: 1px solid rgba(244, 162, 97, 0.3);
+            letter-spacing: 0.3px;
+        }
+        .course-price i {
+            font-size: 0.7rem;
+        }
+
+        /* ===== PRICE BANNER ===== */
+        .price-banner {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            margin: 2rem auto 0;
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            z-index: 1;
+        }
+        .price-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(0, 180, 216, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(6, 214, 160, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .price-banner h3 {
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            font-size: 1.3rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 0.5px;
+        }
+        .price-banner .price-display {
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--gold-light);
+            position: relative;
+            z-index: 2;
+            margin: 0.8rem 0;
+            letter-spacing: -0.5px;
+        }
+        .price-banner .price-display small {
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .price-banner .note {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            position: relative;
+            z-index: 2;
+        }
+        .price-banner .note i {
+            color: var(--green);
+        }
+
+        /* ===== CONTACT SECTION ===== */
+        .contact-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary), #0d2137);
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        .contact-section .section-title h2 {
+            color: white;
+        }
+        .contact-section .section-title p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .contact-section .underline {
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+        }
+        .contact-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .contact-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            min-width: 200px;
+        }
+        .contact-card:hover {
+            background: rgba(0, 180, 216, 0.15);
+            border-color: var(--accent);
+            transform: translateY(-4px);
+        }
+        .contact-card .icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+        }
+        .contact-card .label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .contact-card .number {
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .contact-card .number a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .contact-card .number a:hover {
+            color: var(--gold-light);
+        }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            margin-top: 1.5rem;
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+            transition: var(--transition);
+            letter-spacing: 0.3px;
+        }
+        .whatsapp-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 35px rgba(37, 211, 102, 0.6);
+        }
+        .whatsapp-btn i {
+            font-size: 1.4rem;
+        }
+        .brochure-note {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-top: 1.5rem;
+            font-weight: 400;
+        }
+        .brochure-note i {
+            color: var(--gold-light);
+            margin-right: 0.3rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #060f1a;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            position: relative;
+            z-index: 1;
+        }
+        .footer .brand-footer {
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 1px;
+        }
+        .footer .brand-footer span {
+            color: var(--accent);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.6rem 1rem;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+            .logo-text .brand {
+                font-size: 1.1rem;
+            }
+            .logo-text .tagline {
+                font-size: 0.55rem;
+                letter-spacing: 1.5px;
+            }
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+                border-radius: 10px;
+            }
+            .header-badge {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
+            }
+            .hero {
+                padding: 2.5rem 1rem 3.5rem;
+            }
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+            .hero p {
+                font-size: 0.9rem;
+            }
+            .courses-section {
+                padding: 2rem 1rem;
+            }
+            .courses-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 1rem;
+            }
+            .course-card {
+                padding: 1.2rem 1rem;
+            }
+            .course-card h3 {
+                font-size: 0.95rem;
+            }
+            .course-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 1.2rem;
+                border-radius: 10px;
+            }
+            .price-banner {
+                padding: 1.5rem 1rem;
+                margin: 1rem 0.5rem 0;
+            }
+            .price-banner .price-display {
+                font-size: 1.6rem;
+            }
+            .contact-section {
+                padding: 2.5rem 1rem;
+            }
+            .contact-cards {
+                gap: 0.8rem;
+            }
+            .contact-card {
+                padding: 1rem 1.2rem;
+                min-width: 150px;
+            }
+            .contact-card .number {
+                font-size: 0.95rem;
+            }
+            .whatsapp-btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            .hero-tag {
+                font-size: 0.7rem;
+                padding: 0.35rem 0.8rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent2);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== BACKGROUND PARTICLES ===== -->
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <a href="#" class="logo">
+            <div class="logo-icon">M</div>
+            <div class="logo-text">
+                <span class="brand">MM<span>ERC</span></span>
+                <span class="tagline">Ingeniería &amp; Capacitación</span>
+            </div>
+        </a>
+        <div class="header-badge">
+            <i class="fa-solid fa-graduation-cap"></i> ¡Cursos desde S/ 30!
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Capacitación en <span class="highlight">Ingeniería</span> y <span class="highlight">Ciencias Ambientales</span></h1>
+            <p>Formación especializada con herramientas de vanguardia: Python, LaTeX, ArcGIS, QGIS, Google Earth Engine y más.</p>
+            <div class="price-flag">
+                <i class="fa-solid fa-tag"></i> Cursos desde S/ 30
+            </div>
+            <br>
+            <div class="hero-tags">
+                <span class="hero-tag"><i class="fa-brands fa-python"></i> Python</span>
+                <span class="hero-tag"><i class="fa-solid fa-file-code"></i> LaTeX</span>
+                <span class="hero-tag"><i class="fa-solid fa-map"></i> ArcGIS</span>
+                <span class="hero-tag"><i class="fa-solid fa-layer-group"></i> QGIS</span>
+                <span class="hero-tag"><i class="fa-solid fa-earth-americas"></i> GEE</span>
+                <span class="hero-tag"><i class="fa-solid fa-gears"></i> Automatización</span>
+            </div>
+            <div class="audience-badge">
+                <i class="fa-solid fa-users"></i> Dirigido a estudiantes de ingeniería y carreras aledañas
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== COURSES SECTION ===== -->
+    <section class="courses-section">
+        <div class="section-title">
+            <h2>Nuestros Cursos y Servicios</h2>
+            <div class="underline"></div>
+            <p>Capacitación práctica y especializada para potenciar tu perfil profesional</p>
+        </div>
+        <div class="courses-grid">
+
+            <!-- 1. Capacitación General -->
+            <div class="course-card">
+                <div class="course-icon icon-training">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+                <h3>Capacitación Especializada</h3>
+                <p>Programas de formación técnica y profesional en ingeniería, ciencias ambientales y herramientas digitales.</p>
+                <span class="course-price"><i class="fa-solid fa-tag"></i> S/ 30</span>
+            </div>
+
+            <!-- 2. Python aplicado a ciencias ambientales -->
+            <div class="course-card">
+                <div class="course-icon icon-python">
+                    <i class="fa-brands fa-python"></i>
+                </div>
+                <h3>Python Aplicado a Ciencias Ambientales</h3>
+                <p>Análisis de datos ambientales, visualización y automatización de procesos con Python para investigación.</p>
+                <span class="course-price"><i class="fa-solid fa-tag"></i> S/ 30</span>
+            </div>
+
+            <!-- 3. LaTeX para CV -->
+            <div class="course-card">
+                <div class="course-icon icon-cv">
+                    <i class="fa-solid fa-file-pen"></i>
+                </div>
+                <h3>LaTeX para Currículum Vitae</h3>
+                <p>Diseña un CV profesional y elegante usando LaTeX. Destaca ante reclutadores y empresas de ingeniería.</p>
+                <span class="course-price"><i class="fa-solid fa-tag"></i> S/ 30</span>
+            </div>
+
+            <!-- 4. Informes con LaTeX -->
+            <div class="course-card">
+                <div class="course-icon icon-latex">
+                    <strong style="font-size:1.2rem; font-family:'Times New Roman',serif;">LaTeX</strong>
+                </div>
+                <h3>Informes con LaTeX</h3>
+                <p>Elaboración de informes técnicos y académicos de alta calidad tipográfica con LaTeX.</p>
+                <span class="course-price"><i class="fa-solid fa-tag"></i> S/ 30</span>
+            </div>
+
+            <!-- 5. Análisis estadístico de tesis o trabajos de investigación -->
+            <div class="course-card">
+                <div class="course-icon icon-apa">
+                    <i class="fa-solid fa-book"></i>
+                </div>
+                <h3>Análisis estadístico de Tesis y/o trabajos de investigación </h3>
+                <p>Ciencia de datos, analisis descriptivo e inferencial, y graficos profesionales.</p>
+                <span class="course-price"><i class="fa-solid fa-tag"></i> S/ 30</span>
+            </div>
+
+            <!-- 6. Automatizaciones -->
+            <div class="course-card">
+                <div class="course-icon icon-auto">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <h3>Automatizaciones</h3>
+                <p>Automatiza tareas repetitivas y flujos de trabajo con scripts y herramientas digitales.</p>
+                <span class="course-price"><i class="fa-solid fa-tag"></i> S/ 30</span>
+            </div>
+
+            <!-- 7. ArcGIS mapas temáticos -->
+            <div class="course-card">
+                <div class="course-icon icon-arcgis">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                </div>
+                <h3>ArcGIS: Elaboración de Mapas Temáticos</h3>
+                <p>Diseño y creación de mapas temáticos profesionales con ArcGIS para proyectos ambientales y territoriales.</p>
+                <span class="course-price"><i class="fa-solid fa-tag"></i> S/ 30</span>
+            </div>
+
+            <!-- 8. QGIS intermedio -->
+            <div class="course-card">
+                <div class="course-icon icon-qgis">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <h3>QGIS Intermedio</h3>
+                <p>Análisis espacial, geoprocesamiento y cartografía avanzada con QGIS, el SIG de código abierto.</p>
+                <span class="course-price"><i class="fa-solid fa-tag"></i> S/ 30</span>
+            </div>
+
+            <!-- 9. GEE aplicado a hidrología -->
+            <div class="course-card">
+                <div class="course-icon icon-gee">
+                    <i class="fa-solid fa-earth-americas"></i>
+                </div>
+                <h3>GEE Aplicado a la Hidrología</h3>
+                <p>Google Earth Engine para análisis hidrológico: procesamiento de imágenes satelitales, NDWI y más.</p>
+                <span class="course-price"><i class="fa-solid fa-tag"></i> S/ 30</span>
+            </div>
+
+        </div>
+
+        <!-- Price Banner -->
+        <div class="price-banner">
+            <h3><i class="fa-solid fa-fire" style="color: var(--gold-light);"></i> Promoción por Curso</h3>
+            <div class="price-display">S/ 30 <small>soles</small></div>
+            <div class="note"><i class="fa-solid fa-check-circle"></i> Incluye material de apoyo y sesiones prácticas</div>
+        </div>
+    </section>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <section class="contact-section">
+        <div class="section-title">
+            <h2>Consulte para Más Información</h2>
+            <div class="underline"></div>
+            <p>Obtén el brochure completo y únete al grupo de WhatsApp</p>
+        </div>
+        <div class="contact-cards">
+            <div class="contact-card">
+                <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
+                <div class="label">WhatsApp</div>
+                <div class="number"><a href="https://wa.me/51933085194" target="_blank">933 085 194</a></div>
+            </div>
+            <div class="contact-card">
+                <div class="icon"><i class="fa-brands fa-whatsapp"></i></div>
+                <div class="label">WhatsApp</div>
+                <div class="number"><a href="https://wa.me/51912382174" target="_blank">912 382 174</a></div>
+            </div>
+        </div>
+        <a href="https://wa.me/51933085194?text=Hola%20MMERC%2C%20deseo%20m%C3%A1s%20informaci%C3%B3n%20sobre%20los%20cursos." target="_blank" class="whatsapp-btn">
+            <i class="fa-brands fa-whatsapp"></i> Únete al Grupo de WhatsApp
+        </a>
+        <p class="brochure-note">
+            <i class="fa-solid fa-file-pdf"></i> Solicita el <strong>Brochure completo</strong> con temarios detallados
+        </p>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <span class="brand-footer">MM<span>ERC</span></span> &mdash; Ingeniería y Capacitación &copy; 2026<br>
+        Dirigido a estudiantes de ingeniería y carreras aledañas
+    </footer>
+
+</body>
+</html>
